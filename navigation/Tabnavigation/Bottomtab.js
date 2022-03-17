@@ -8,7 +8,6 @@ import Searchscreen from '../../Screens/Searchscreen'
 import Profile from '../../Screens/Profile';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-
 const Tab = createBottomTabNavigator();
 
 const BottomTab=()=> {

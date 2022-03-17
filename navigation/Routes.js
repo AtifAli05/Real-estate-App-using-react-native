@@ -10,6 +10,7 @@ import Upload from '../Screens/Upload';
 import FetchListing from '../Risecomponents/FetchListing';
 import Bottomtab from './Tabnavigation/Bottomtab'
 import auth from '@react-native-firebase/auth';
+import DetailScreen from '../Screens/Detailscreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -52,8 +53,9 @@ const TabBar=()=>{
     <Stack.Screen name="Tabs"  component={ Bottomtab}  options={{ headerShown: false }}/>
     <Stack.Screen  name="Uploads" component={Upload}/>
     <Stack.Screen name ="FetchListings" component={FetchListing}/>
+    <Stack.Screen name="DetailScreen" component={DetailScreen} />
      
-</Stack.Navigator>
+    </Stack.Navigator>
   )
 }
 const Routes =() => {
@@ -62,6 +64,8 @@ const Routes =() => {
           <Stack.Navigator screenOptions={{headerShown:false , gestureEnabled:true, }} initialRouteName="Auth" >
               <Stack.Screen name="Auth" component={AuthStack} /> 
               <Stack.Screen name="BottomTab"  component={TabBar}  options={{ headerShown: false }}/>
+              {/* <Stack.Screen name ="FetchListings" component={FetchListing}/>
+              <Stack.Screen name="DetailScreen" component={DetailScreen} /> */}
           </Stack.Navigator>
     </NavigationContainer>
   );
