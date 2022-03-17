@@ -1,17 +1,16 @@
 import React from 'react';
 import {Text, Image, View, StyleSheet, TouchableOpacity, } from 'react-native';
 import { getProducts } from './HouseList';
+import {useNavigation} from '@react-navigation/native';
 
 export function Listings({name, price, image , Area ,}) {
+   const nav = useNavigation();
   return (
     <View>
 
-    <TouchableOpacity style={styles.card} >
+    <View style={styles.card}  >
 
-      <View>
-
-      </View>
-      <View style={{flexDirection:'row' }}>
+      <View style={{flexDirection:'row' }}   >
       <Image
         style={styles.thumb}
         source={image}
@@ -20,18 +19,13 @@ export function Listings({name, price, image , Area ,}) {
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.price}>$ {price}</Text>
-        
           <Text>{Area}</Text>
           <Text>House for Rent</Text>
           <Text>See More</Text>
-        
-        
+      </View>
       </View>
 
-    
-
-      </View>
-    </TouchableOpacity>
+    </View>
     </View>
   );
 }
