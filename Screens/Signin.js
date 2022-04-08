@@ -23,11 +23,8 @@ const Signinvalidationschema=yup.object().shape({
 const Signin = ({navigation}) => {
   const nav = useNavigation(); 
   const Login=(values)=>{
-    console.log(values,typeof(values))
     loginUser(values).then(user=>{
-      console.log("user data is hereeeeeeee" + user)
-      if(user)
-      navigation.replace("BottomTab")
+      console.log("user data is hereeeeeeee" + JSON.stringify(user))
     }).catch(error=>{
       alert(" login faild " + error);
     })
@@ -41,7 +38,7 @@ const Signin = ({navigation}) => {
          </View>
                <Header />
          <View style={styles.welcomview}>
-             <Text style={{fontSize:20,color:'blue',fontWeight:'bold'}}>WELCOME BACK!</Text>
+             <Text style={{fontSize:20,color:'#87ceeb',fontWeight:'bold',marginVertical:20}}>WELCOME BACK!</Text>
          </View>
          <Formik
     
@@ -99,7 +96,9 @@ const Signin = ({navigation}) => {
 <Text style={{color:'#000000'}} > Dont have an account </Text>
 
   <Pressable onPress={()=>nav.navigate('Signups')}>
-  <Text style={{color:'blue',fontWeight:'bold',fontSize:17}} >Sign UP </Text>
+    <View style={{marginTop:10}}>
+  <Text style={{color:'#87ceeb',fontWeight:'bold',fontSize:17,}} >Sign UP </Text>
+  </View>
   </Pressable>
  
   </View>
@@ -137,7 +136,7 @@ const styles = StyleSheet.create({
         paddingLeft:30,
         fontSize:15,
         color:'#000000',
-        paddingVertical:10
+        paddingVertical:17
       },
       errormsg:{
         paddingLeft:20,
@@ -149,13 +148,13 @@ const styles = StyleSheet.create({
         height: 45,
        marginHorizontal:10,
         backgroundColor: '#FFF',
-        borderColor: '#2F2FC6',
+        borderColor: '#87ceeb',
        borderWidth:2,
         borderRadius: 20,
       },
       appButtonContainer: {
         elevation: 10,
-        backgroundColor: "blue",
+        backgroundColor: "#87ceeb",
         borderRadius: 20,
         marginHorizontal:10,
         height:45,
@@ -174,18 +173,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         borderwidth:5,
         borderRadius: 20,
-        
         height:45,
         alignItems:'center',
         justifyContent:'center',
-        marginVertical:5
+        marginVertical:2
       },
       googleButtonText: {
         fontSize: 18,
         
         fontWeight: "bold",
         alignSelf: "center",
-        textTransform: "uppercase"
+        
       },
 });
 

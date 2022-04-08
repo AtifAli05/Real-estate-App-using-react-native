@@ -13,6 +13,7 @@ const PRODUCTS = [
         price: 600,
         Area: '50 Sq.Yd',
         image: require('../images/houe.jpg'),
+        
         description: 'A model car, or toy car, is a miniature representation of an automobile. Other miniature motor vehicles, such as trucks, buses, or even ATVs, etc. are often included in this general category.'
     },
     {

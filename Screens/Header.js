@@ -6,7 +6,7 @@ import { View, Text, StyleSheet,Image } from 'react-native';
 const header = () => {
     return (
         <View style={styles.container}>
-            <Image style={{ width:90,height:80 }} source={require("../Logo/Applogo.jpeg" , )}/>
+            <Image style={{ width:120,height:110 , resizeMode:'contain'}} source={require("../Logo/Applogo.jpeg" , )}/>
         </View>
     );
 };

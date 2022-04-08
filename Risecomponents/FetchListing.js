@@ -10,7 +10,7 @@ const FetchListing = () => {
   const nav = useNavigation();
   var Products =getProducts();
   return (
-    <View >
+    <View  >
           <FlatList
           keyExtractor={(item) => item.id.toString()}
           data={Products}
