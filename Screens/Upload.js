@@ -1,6 +1,6 @@
 
 import React, { Component,useState } from 'react';
-import { View, Text, StyleSheet ,TextInput,Pressable,TouchableOpacity, Button,ScrollView,Platform} from 'react-native';
+import { View, Text, StyleSheet ,TextInput,Pressable,TouchableOpacity, Button,ScrollView,Alert,ActivityIndicator,Dimensions} from 'react-native';
 import Uploadheader from '../Screens/Uploadheader';
 import PhoneNumber from '../Components/PhoneNumber';
 import COLORS from '../COLORS/COLORS';
@@ -9,11 +9,16 @@ import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
 import RadioGroup from 'react-native-radio-buttons-group';
 import Imagepicker from '../Components/Imagepicker';
-import firestor from "@react-native-firebase/firestore";
+import app from "@react-native-firebase/app";
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { utils } from '@react-native-firebase/app';
-import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
+import storage, { firebase } from '@react-native-firebase/storage';
+
+const {height,width} = Dimensions.get('window');
+
+ 
+const secondaryStorageBucket = firebase.app().storage('gs://my-secondary-bucket.appspot.com');
 // create a component
 const Uploadvalidationschema=yup.object().shape({
   name: yup.string()
@@ -66,6 +71,9 @@ const Upload = () => {
   const [radioButtons, setRadioButtons] = useState(propertytype);
   const [radiopropose, setradiopropose] = useState(propose);
   const [response, setResponse] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+  const [URL,setURL]=React.useState([]);
+
 
 
   const onPressRadioButton = radioButtonsArray => {
@@ -74,24 +82,98 @@ const Upload = () => {
   const onPressRadiopropose = radio => {
     setradiopropose(radio);
   };
-  const putStorageItem=async ({uri}) =>{
+  const putStorageItem=async (item) =>{
     // the return value will be a Promise
-   const img=await storage().refFromURL("gs://realstate-94963.appspot.com/property").putFile(uri)
+    // "gs://realstate-94963.appspot.com"
     
-    return storage().ref(img.ref).fullPath;
+    const response = await fetch(item.uri);
+    const blob = await response.blob();
+    var ref = storage().ref().child("Books/" + item.fileName);
+    var uploadBook = ref.put(blob);
+    uploadBook.on('state_changed', taskSnapshot => {
+      console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
+    });
+    
+    uploadBook.then(() => {
+      console.log('Image uploaded to the bucket!');
+    });
      
   }
-  const uploadData=async (values)=>{
+
+  const uploadImage = async ({uri}) => {
     
-    let data =await response.assets.map((item)=>putStorageItem(item));
-    console.log(data)
-    // firestor().collection('property').add(values).then((res)=>{
-    //   console.log(res)
-    // }).catch(err=>console.log("Erroor>>>>",err))
+
+  };
+  const uploadData=async (values)=>{
+    setLoading(true);
+    
+    
+    response.assets.forEach(async({uri}) => {
+      if( uri == null ) {
+        return null;
+      }
+      const uploadUri = uri;
+      let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+  
+      // Add timestamp to File Name
+      const extension = filename.split('.').pop(); 
+      const name = filename.split('.').slice(0, -1).join('.');
+      filename = name + Date.now() + '.' + extension;
+  
+  
+      const storageRef = storage().ref(`photos/${filename}`);
+      const task = storageRef.putFile(uploadUri);
+  
+      // Set transferred state
+      task.on('state_changed', (taskSnapshot) => {
+        console.log(
+          `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+        );
+  
+        
+      });
+  
+      try {
+        await task;
+  
+        const url = await storageRef.getDownloadURL();
+        console.log(url);
+        
+        setURL([...URL,url]);
+  
+      } catch (e) {
+        console.log(e);
+        return null;
+      }
+    });
+
+   
+
+     
+      //data is an array of urls
+
+    if(URL.length==response.assets.length){
+      values.images=URL; 
+      firestore().collection('property').add(values).then((res)=>{
+        console.log(res)
+        Alert.alert(
+          'Image uploaded!',
+          'Your image has been uploaded to the Firebase Cloud Storage Successfully!',
+        );
+      }).catch(err=>console.log("Erroor>>>>",err))
+    }
   }
 
     return (
         <ScrollView>
+          {loading&&<View style={{zIndex:100,height:height,width:width,position:'absolute',left:0,top:0,backgroundColor:'transparent',justifyContent:'center',alignItems:'center'}}>
+            <ActivityIndicator
+            size={'large'}
+            animating={loading}
+            color={COLORS.RED}
+            />
+            <Text>Loading....</Text>
+          </View>}
             <Formik
           validationSchema={Uploadvalidationschema}
     initialValues={{  name:'',Description:'',email:'',location:'',phone:'',images:[] }}
