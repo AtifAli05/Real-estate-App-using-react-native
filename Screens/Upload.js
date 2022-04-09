@@ -136,8 +136,7 @@ const Upload = () => {
       try {
         await task;
   
-        const url = await storageRef.getDownloadURL();
-        console.log(url);
+        const url = await storageRef.getDownloadURL()
         
         setURL([...URL,url]);
   
@@ -152,7 +151,7 @@ const Upload = () => {
      
       //data is an array of urls
 
-    if(URL.length==response.assets.length){
+    if(URL.length>0&&URL.length==response.assets.length){
       values.images=URL; 
       firestore().collection('property').add(values).then((res)=>{
         console.log(res)
