@@ -70,7 +70,7 @@ const Main = ({navigation}) => {
                     <View style={styles.header}>
                         <View>
                             <Text style={{color:COLORS.grey}} > Location  </Text>
-                            <Text style={{color:COLORS.dark , fontSize:20,}} > Canada  </Text>
+                            <Text style={{color:COLORS.dark , fontSize:20,}} > Pakistan  </Text>
                         </View>
                         <View >
                             <Image source={require('../images/profile.png')}
