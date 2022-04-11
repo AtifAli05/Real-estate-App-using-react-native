@@ -15,7 +15,7 @@ const loginValidationSchema = yup.object().shape({
     .string()
     .min(8, ({ min }) => `Password must be at least ${min} characters`)
     .required('*Password is required')
-    .matches(/^\d{6,}$/, 'Password should be a Capital latter with one Special Symbol'),
+     ,
     name: yup.string()
     .required('*Name is required').label('Name'),
     // phoneNumber: yup
@@ -40,7 +40,7 @@ const Signup = ({navigation}) => {
   return (
     <View style={{flex:1,backgroundColor:'#FFF',}}>
       <Header/>
-      <Text style={{fontSize:18,fontWeight:'bold',marginLeft:10 ,color:'#87ceeb',paddingTop:5,marginTop:20}}>CREATE ACCOUNT</Text>
+      <Text style={{fontSize:18,fontWeight:'bold',marginLeft:10 ,color:'#87ceeb',paddingTop:5,marginVertical:20}}>CREATE ACCOUNT</Text>
     <Formik
     
    validationSchema={loginValidationSchema}
@@ -116,7 +116,7 @@ const Signup = ({navigation}) => {
 <Text style={{color:'#000000'}} > Already have an account? </Text>
 
   <Pressable onPress={()=>nav.navigate('Signins')}>
-  <Text style={{color:"blue",fontWeight:'bold'}} >Sign In </Text>
+  <Text style={{color:"#87ceeb",fontWeight:'bold',fontSize:17}} >Sign In </Text>
   </Pressable>
   
   </View>
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   filedName:{
-    paddingLeft:20,
+    paddingLeft:30,
     fontSize:15,
     color:'#000000',
     paddingVertical:10
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     marginHorizontal:10,
     height:45,
     justifyContent:'center',
-    marginVertical:15
+    marginVertical:25
   },
   appButtonText: {
     fontSize: 18,

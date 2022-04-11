@@ -13,7 +13,7 @@ const Main = ({navigation}) => {
         return(
             <TouchableOpacity style={styles.category} >
                 {category.map((list , index )=> (
-                   <TouchableOpacity key={index}  onPress={ ()=> {setselectedcategory(index);nav.navigate('FetchListings') }} >
+                   <TouchableOpacity key={index}  onPress={ ()=> {setselectedcategory(index); }} >
                        <Text style={[styles.Listitems , index==selectedcategory 
                         && styles.ActiveCategoryList]}>{list}</Text>
                </TouchableOpacity> 
@@ -23,8 +23,8 @@ const Main = ({navigation}) => {
     const OptionList=()=>{
         
         const list=[
-            {title:'Buy A house' , img:require('../images/houe.jpg' )},
-            {title:'Rent A home' ,img:require('../images/houe.jpg' )}
+            {title:'Buy A house' , img:require('../images/houe.jpg' ),screen:'FetchListings'},
+            {title:'Rent A home' ,img:require('../images/houe.jpg' ),screen:'Upload'}
         ];
             
         return(
@@ -32,8 +32,12 @@ const Main = ({navigation}) => {
                 
                 {list.map(( option, index )=>(
                     <View style={styles.listcard} key={index}>
+                       <TouchableOpacity onPress={()=>nav.navigate(option.screen)} >
                         <Image style={{height:160,width:125,borderRadius:10}} source={option.img}/>
-                        <Text style={{ alignItems:'center', marginTop:10,fontSize:15, }}>{option.title}</Text>
+                         <View style={{alignItems:'center'}} >
+                        <Text style={{  marginTop:10,fontSize:15, }}>{option.title}</Text>
+                        </View>
+                        </TouchableOpacity>
                 </View>
                 ))}
     
@@ -43,21 +47,21 @@ const Main = ({navigation}) => {
     
     const house=[
         {title:'Buy A Furnished' , img:require('../images/houe.jpg' )},
-        {title:'Buy A plot' , img:require('../images/houe.jpg' )},
         {title:'Buy A house' , img:require('../images/houe.jpg' )}];
     
     const Card=({house})=>{ 
         return(
+            <View style={{marginHorizontal:15}} >
             <View style={styles.card}>
 
                 <Pressable  >
-                    <View style={{marginLeft:10,marginTop:10 }}>
-                    <Image style={{height:150, width:300 , borderRadius:10 }} source={house.img}/>
+                    <View style={{marginTop:10,alignItems:'center'}}>
+                    <Image style={{height:150, width:300, borderRadius:10 }} source={house.img}/>
                     </View>
-                   <Text style={{marginTop:5, fontSize:15,fontWeight:'bold',marginLeft:5}}> Write something  </Text>
+                   <Text style={{marginTop:5, fontSize:15,fontWeight:'bold',marginLeft:5}}> {house.title} </Text>
                 </Pressable>
             </View>
-            
+            </View>
         )
     };
     return (
@@ -66,7 +70,7 @@ const Main = ({navigation}) => {
                     <View style={styles.header}>
                         <View>
                             <Text style={{color:COLORS.grey}} > Location  </Text>
-                            <Text style={{color:COLORS.dark , fontSize:20,}} > Canada  </Text>
+                            <Text style={{color:COLORS.dark , fontSize:20,}} > Pakistan  </Text>
                         </View>
                         <View >
                             <Image source={require('../images/profile.png')}
@@ -152,15 +156,15 @@ const styles = StyleSheet.create({
         color:COLORS.grey 
     },
     card:{
-        // display:'flex',
+       // display:'flex',
         height:200,
         backgroundColor:COLORS.white,
         width:320,
-         elevation:10,
+        elevation:10,
         marginTop:20,
-        marginLeft:47,
         borderRadius:18,
         marginHorizontal:20,
+        
     },
 
 });

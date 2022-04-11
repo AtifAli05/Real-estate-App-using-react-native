@@ -4,15 +4,11 @@ import { View, Text, Alert, StyleSheet, TouchableOpacity } from 'react-native';
  
 import PhoneInput from 'react-native-phone-number-input';
  
-const PhoneNumber=()=> {
+const PhoneNumber=({onChangePhone,phoneNumber})=> {
  
-  const [phoneNumber, setPhoneNumber] = useState('');
  
   const phoneInput = useRef(null);
  
-  const getPhoneNumber = () => {
-    Alert.alert(phoneNumber);
-  };
  
   return (
     <View style={styleSheet.MainContainer}>
@@ -22,10 +18,10 @@ const PhoneNumber=()=> {
       <PhoneInput  
         ref={phoneInput}
         defaultValue={phoneNumber}
-        defaultCode="IN"
+        defaultCode="PK"
         containerStyle={styleSheet.phoneContainer}
         textContainerStyle={styleSheet.textInput}
-        
+        onChangeText={onChangePhone}
       />
  
      

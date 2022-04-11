@@ -53,6 +53,7 @@ const TabBar=()=>{
     <Stack.Screen name="Tabs"  component={ Bottomtab}  options={{ headerShown: false }}/>
     <Stack.Screen  name="Uploads" component={Upload}/>
     <Stack.Screen name ="FetchListings" component={FetchListing}/>
+    <Stack.Screen name="Upload" component={Upload}/>
     <Stack.Screen name="DetailScreen" component={DetailScreen} />
      
     </Stack.Navigator>

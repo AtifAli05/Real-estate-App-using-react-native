@@ -22,10 +22,10 @@ export const signUpUser = async ({ name, email, password }) => {
 
 export const loginUser = async ({ email, password }) => {
   try {
-    const user = await firebase
-      .auth()
+    const user = await auth()
       .signInWithEmailAndPassword(email, password)
-    return { user }
+
+      return {user};
   } catch (error) {
     return {
       error: error.message,
