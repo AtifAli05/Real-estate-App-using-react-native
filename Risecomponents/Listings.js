@@ -3,8 +3,9 @@ import {Text, Image, View, StyleSheet, TouchableOpacity, } from 'react-native';
 import { getProducts } from './HouseList';
 import {useNavigation} from '@react-navigation/native';
 
-export function Listings({name, price, image , Area ,}) {
+export function Listings({name, Price, image , Area ,Description,location,phone}) {
    const nav = useNavigation();
+   let images=image!=undefined?{uri:image}:require('../images/houe.jpg');
   return (
     <View>
 
@@ -12,16 +13,16 @@ export function Listings({name, price, image , Area ,}) {
 
       <View style={{flexDirection:'row' }}   >
       <Image
-        style={styles.thumb}
-        source={image}
+        style={styles.image}
+        source={images}
       />
       
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{name}</Text>
-        <Text style={styles.price}>$ {price}</Text>
-          <Text>{Area}</Text>
-          <Text>House for Rent</Text>
-          <Text>See More</Text>
+        <Text style={styles.price}>Rs {Price}</Text>  
+          <Text>Area {Area} sq/yd</Text>
+          <Text>{location}</Text>
+          
       </View>
       </View>
 
@@ -39,9 +40,9 @@ const styles = StyleSheet.create({
     elevation: 1,
     marginVertical: 3,
     marginHorizontal:5,
-    borderWidth:0.5
+    borderWidth:0.5,
   },
-  thumb: {
+  image: {
     height: 140,
     borderRadius:10,
     width: '50%',

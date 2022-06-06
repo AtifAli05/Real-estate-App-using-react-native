@@ -1,33 +1,18 @@
 import { ActionTypes } from "../constants/action-types";
 
 const initialState = {
-    products: [
-        // {  id: 1, name: 'Rehan', category : 'Practice_Test'  },
-    ],
+    data: [ ],
 }
 // step(3). After dispatch the action then the reducere take action and update the state by using the action like ActionTypes.SET_PRODUCTS
-export const productReducer= (state = initialState,{type,payload}) => {
+export const loginReducer= (state = initialState,{type,payload}) => {
    switch (type) {
-       case ActionTypes.SET_PRODUCTS:
-           return {...state, products: payload};
+       case ActionTypes.AUTH_LOGIN:
+           return {...state, data: payload};
            // (...state) is used to get the current state.And the payload whatever had in the action from the api's data in the reducer.
        default:
-           return state;
+           return state; 
    }
 };
-
-export const SelectProductReducer= (state = {},{type,payload}) => {
-    debugger
-    switch (type) {
-        case ActionTypes.SELECTED_PRODUCTS:
-            return {...state, ...payload};
-            // (...state) is used to get the current state.And the payload whatever had in the action from the api's data in the reducer.
-        case ActionTypes.REMOVE_SELECTED_PRODUCTS:
-            return {};
-            default:
-            return state;
-    }
- };
 
 
 // Reducers having two parameters.one is the state and the other is the action. 

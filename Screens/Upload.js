@@ -1,6 +1,6 @@
 
 import React, { Component,useState } from 'react';
-import { View, Text, StyleSheet ,TextInput,Pressable,TouchableOpacity, Button,ScrollView,Alert,ActivityIndicator,Dimensions} from 'react-native';
+import { View, Text, StyleSheet ,TextInput,Pressable,TouchableOpacity, Button,ScrollView,Platform,ActivityIndicator} from 'react-native';
 import Uploadheader from '../Screens/Uploadheader';
 import PhoneNumber from '../Components/PhoneNumber';
 import COLORS from '../COLORS/COLORS';
@@ -9,16 +9,13 @@ import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
 import RadioGroup from 'react-native-radio-buttons-group';
 import Imagepicker from '../Components/Imagepicker';
-import app from "@react-native-firebase/app";
+import firestore from "@react-native-firebase/firestore";
+import firebase from "@react-native-firebase/app";
+
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import firestore from '@react-native-firebase/firestore';
-import storage, { firebase } from '@react-native-firebase/storage';
-
-const {height,width} = Dimensions.get('window');
-
- 
-const secondaryStorageBucket = firebase.app().storage('gs://my-secondary-bucket.appspot.com');
+// import { utils } from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 // create a component
 const Uploadvalidationschema=yup.object().shape({
   name: yup.string()
@@ -72,9 +69,6 @@ const Upload = () => {
   const [radiopropose, setradiopropose] = useState(propose);
   const [response, setResponse] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
-  const [URL,setURL]=React.useState([]);
-
-
 
   const onPressRadioButton = radioButtonsArray => {
     setRadioButtons(radioButtonsArray);
@@ -82,33 +76,20 @@ const Upload = () => {
   const onPressRadiopropose = radio => {
     setradiopropose(radio);
   };
-  const putStorageItem=async (item) =>{
+  const putStorageItem=async ({uri},documentRef) =>{
     // the return value will be a Promise
-    // "gs://realstate-94963.appspot.com"
+   const path=await storage()
+   const img=path.ref('images').putFile(uri)
     
-    const response = await fetch(item.uri);
-    const blob = await response.blob();
-    var ref = storage().ref().child("Books/" + item.fileName);
-    var uploadBook = ref.put(blob);
-    uploadBook.on('state_changed', taskSnapshot => {
-      console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
-    });
-    
-    uploadBook.then(() => {
-      console.log('Image uploaded to the bucket!');
-    });
+    return storage().ref(img.ref).fullPath;
      
   }
-
-  const uploadImage = async ({uri}) => {
-    
-
-  };
   const uploadData=async (values)=>{
     setLoading(true);
-    
-    
-    response.assets.forEach(async({uri}) => {
+    var docRef;
+    firestore().collection('property').add(values).then((res)=>{
+     docRef= firestore().collection('property').doc(res.id)
+     response.assets.forEach(async({uri},index) => {
       if( uri == null ) {
         return null;
       }
@@ -119,63 +100,37 @@ const Upload = () => {
       const extension = filename.split('.').pop(); 
       const name = filename.split('.').slice(0, -1).join('.');
       filename = name + Date.now() + '.' + extension;
-  
-  
       const storageRef = storage().ref(`photos/${filename}`);
       const task = storageRef.putFile(uploadUri);
-  
       // Set transferred state
       task.on('state_changed', (taskSnapshot) => {
         console.log(
           `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
         );
-  
-        
       });
-  
       try {
         await task;
-  
         const url = await storageRef.getDownloadURL()
-        
-        setURL([...URL,url]);
-  
-      } catch (e) {
+        docRef.update( {
+          images: firebase.firestore.FieldValue.arrayUnion( url )
+       });
+       if(index+1==response.assets.length)
+{
+  console.log("completed")
+  setLoading(false)
+}      } catch (e) {
         console.log(e);
         return null;
       }
     });
-
-   
-
-     
-      //data is an array of urls
-
-    if(URL.length>0&&URL.length==response.assets.length){
-      values.images=URL; 
-      firestore().collection('property').add(values).then((res)=>{
-        console.log(res)
-        Alert.alert(
-          'Image uploaded!',
-          'Your image has been uploaded to the Firebase Cloud Storage Successfully!',
-        );
-      }).catch(err=>console.log("Erroor>>>>",err))
-    }
+    
+    }).catch(err=>console.log("Erroor>>>>",err))
   }
-
     return (
         <ScrollView>
-          {loading&&<View style={{zIndex:100,height:height,width:width,position:'absolute',left:0,top:0,backgroundColor:'transparent',justifyContent:'center',alignItems:'center'}}>
-            <ActivityIndicator
-            size={'large'}
-            animating={loading}
-            color={COLORS.RED}
-            />
-            <Text>Loading....</Text>
-          </View>}
             <Formik
           validationSchema={Uploadvalidationschema}
-    initialValues={{  name:'',Description:'',email:'',location:'',phone:'',images:[] }}
+    initialValues={{  name:'',Description:'',email:'',location:'',phone:'',images:[],Price:'',Area:'', }}
    onSubmit={uploadData}
   >
     {({
@@ -245,7 +200,29 @@ const Upload = () => {
       />   
                 </View>
             </View>
-
+            <View style={styles.listcard2}>
+            <Text style={styles.text && styles.filedName}>Area</Text>
+            <TextInput
+         name="Area"
+         placeholder="Ex:40.yd/sq"
+         style={styles.Details}
+         onChangeText={handleChange('Area')}
+         onBlur={handleBlur('Area')}
+         value={values.Area}
+         keyboardType="numeric"
+       /></View>
+            <View style={styles.listcard2}>
+            <Text style={styles.text && styles.filedName}>Price</Text>
+            <TextInput
+         name="Price"
+         placeholder="Ex:4000rs/months"
+         style={styles.Details}
+         onChangeText={handleChange('Price')}
+         onBlur={handleBlur('Price')}
+         value={values.Price}
+         keyboardType="numeric"
+       /></View>
+           
             <View style={styles.listcard}>
             <Text style={styles.text && styles.filedName}>Property Details</Text>
             <TextInput
@@ -289,8 +266,10 @@ const Upload = () => {
            <Imagepicker response={response} setResponse={setResponse}/>
         </View> 
         <View style={{alignItems:'center', marginTop:10}} >
-           <TouchableOpacity style={styles.uploadbtn} onPress={handleSubmit}>
-           <Text style={{fontWeight:'bold'}} >Upload</Text>
+           <TouchableOpacity
+           disabled={loading}
+           style={styles.uploadbtn} onPress={handleSubmit}>
+           {loading?<ActivityIndicator size={"small"} color="#fff" />:<Text style={{fontWeight:'bold'}} >Upload</Text>}
            </TouchableOpacity>
            </View>
         </View>
@@ -379,7 +358,17 @@ const styles = StyleSheet.create({
         borderRadius:10,
         marginBottom:4
         
-    }
+    },
+    listcard2:{
+      height:120,
+      paddingHorizontal:10,
+     marginBottom:4,
+      elevation:5,
+      backgroundColor:'#FFF',
+      borderRadius:10,
+      
+     marginVertical:5
+  },
 });
 
 //make this component available to the app
