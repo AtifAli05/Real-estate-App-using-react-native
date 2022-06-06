@@ -55,7 +55,7 @@ const TabBar=()=>{
     <Stack.Screen name ="FetchListings" component={FetchListing}/>
     <Stack.Screen name="Upload" component={Upload}/>
     <Stack.Screen name="DetailScreen" component={DetailScreen} />
-     <Stack.Screen name="index" component={index}/>
+     {/* <Stack.Screen name="index" component={index}/> */}
     </Stack.Navigator> 
   )
 }
