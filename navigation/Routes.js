@@ -11,7 +11,7 @@ import FetchListing from '../Risecomponents/FetchListing';
 import Bottomtab from './Tabnavigation/Bottomtab'
 import auth from '@react-native-firebase/auth';
 import DetailScreen from '../Screens/Detailscreen';
-import index from '../Maps/index';
+// import index from '../Maps/index';
 
 const Stack = createNativeStackNavigator();
 const AuthStack=(props)=>{
