@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 const Detailscreen = ({route}) => {
     const nav = useNavigation();
     const {item} = route.params;
+    console.log(item);
     return (
         <View style={{flex:1,backgroundColor:'#fff'}}>
             <ScrollView>
@@ -17,7 +18,7 @@ const Detailscreen = ({route}) => {
                <Text style={styles.title}>{item.name }</Text>
            </View>
            <View style={styles.map} > 
-                <TouchableOpacity style={styles.button}  >
+                <TouchableOpacity onPress={()=>nav.navigate("Maps")} style={styles.button}  >
                     <Text>View Location on Map</Text>
                     </TouchableOpacity>
            </View>
