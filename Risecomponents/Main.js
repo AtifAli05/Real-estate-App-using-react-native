@@ -41,7 +41,7 @@ const Main = ({navigation}) => {
                 </View>
                 ))}
     
-            </View>
+            </View> 
         );
     };
     

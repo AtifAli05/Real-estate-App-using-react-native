@@ -4,19 +4,20 @@ import { View, Text, StyleSheet,Image,TouchableOpacity, Button, ScrollView } fro
 import { useNavigation } from '@react-navigation/native';
 
 // create a component
-const Detailscreen = () => {
+const Detailscreen = ({route}) => {
     const nav = useNavigation();
+    const {item} = route.params;
     return (
         <View style={{flex:1,backgroundColor:'#fff'}}>
             <ScrollView>
             <View style={{marginHorizontal:5,alignItems:'center',height:300,}} >
-           <Image style={styles.image} source={require('../images/houe.jpg')} resizeMode="contain" />
+           <Image style={styles.image} source={{uri:item.images[0]}} resizeMode="contain" />
            </View>
            <View style={{marginTop:10,marginHorizontal:10}}>
-               <Text style={styles.title}>I get sample error, because I forgot style Image with I get sample error, because I forgot style Image with </Text>
+               <Text style={styles.title}>{item.name }</Text>
            </View>
-           <View style={styles.map} >
-                <TouchableOpacity style={styles.button} >
+           <View style={styles.map} > 
+                <TouchableOpacity style={styles.button}  >
                     <Text>View Location on Map</Text>
                     </TouchableOpacity>
            </View>
@@ -24,16 +25,16 @@ const Detailscreen = () => {
            <Text style={{fontWeight:'bold',color:'#000',marginVertical:10}}>Details</Text>
            </View>
            <View style={{justifyContent:'space-around',flexDirection:'row',marginVertical:10}} >
-           <Text style={{fontWeight:'bold'}}>Property Id</Text>
-           <Text style={{fontWeight:'bold'}}>1234567</Text>
+           <Text style={{fontWeight:'bold'}}>Contact</Text>
+           <Text style={{fontWeight:'bold'}}>{item.phone}</Text>
            </View>
            <View style={{justifyContent:'space-around',flexDirection:'row',marginVertical:10}} >
            <Text style={{fontWeight:'bold'}}>Price</Text>
-           <Text style={{fontWeight:'bold'}}>100000</Text>
+           <Text style={{fontWeight:'bold'}}>{item.Price}Rs</Text>
            </View>
            <View style={{justifyContent:'space-around',flexDirection:'row',marginVertical:10}} >
            <Text style={{fontWeight:'bold'}}>Area</Text>
-           <Text style={{fontWeight:'bold'}}>1345 yd/sq</Text>
+           <Text style={{fontWeight:'bold'}}>{item.Area}yard</Text>
            </View>
            <View style={{justifyContent:'space-around',flexDirection:'row',marginVertical:10}} >
            <Text style={{fontWeight:'bold'}}>Purpose</Text>
@@ -41,12 +42,11 @@ const Detailscreen = () => {
            </View>
            <View style={{justifyContent:'space-around',flexDirection:'row',marginVertical:10}} >
            <Text style={{fontWeight:'bold'}}>City</Text>
-           <Text style={{fontWeight:'bold'}}>Islamabad</Text>
+           <Text style={{fontWeight:'bold'}}>{item.location}</Text>
            </View>
            <View style={{marginHorizontal:15,marginTop:10}}>
            <Text style={{fontWeight:'bold',color:'#000',}}>Description</Text>
-           <Text style={{marginTop:5}}>I get sample error, because I forgot style Image with I get sample error, because I forgot style Image with 
-           I get sample error, because I forgot style Image with I get sample error, because I forgot style Image with </Text>
+           <Text style={{marginTop:5}}>{item.Description} </Text>
            </View>
            <View style={{alignItems:'center', marginTop:10}} >
            <TouchableOpacity style={styles.callbtn}>

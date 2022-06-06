@@ -13,7 +13,7 @@ const FetchListing = () => {
 
   const getProducts = () => { 
   firestore()
-  .collection('property')
+  .collection('property') 
   .get()
   .then(documentSnapshot => {
     console.log(documentSnapshot.docs)
@@ -51,7 +51,7 @@ if(loading)
           renderItem={({item})=>{
             console.log(item.name,"    ",item?.images[0])
       return(
-        <TouchableOpacity onPress={()=> nav.navigate('DetailScreen')} >
+        <TouchableOpacity onPress={()=> nav.navigate('DetailScreen',{item:item})} >
           {/* <Text>ass</Text> */}
        <Listings name={item.name} Price={item.Price} image={item?.images[0]} Area={item.Area} location={item.location}/>
        </TouchableOpacity>)}}

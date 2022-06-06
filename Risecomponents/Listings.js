@@ -3,7 +3,7 @@ import {Text, Image, View, StyleSheet, TouchableOpacity, } from 'react-native';
 import { getProducts } from './HouseList';
 import {useNavigation} from '@react-navigation/native';
 
-export function Listings({name, Price, image , Area ,Description,location}) {
+export function Listings({name, Price, image , Area ,Description,location,phone}) {
    const nav = useNavigation();
    let images=image!=undefined?{uri:image}:require('../images/houe.jpg');
   return (
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     elevation: 1,
     marginVertical: 3,
     marginHorizontal:5,
-    borderWidth:0.5
+    borderWidth:0.5,
   },
   image: {
     height: 140,
