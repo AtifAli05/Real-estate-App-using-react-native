@@ -69,20 +69,17 @@ const Main = ({navigation}) => {
            <View >
                     <View style={styles.header}>
                         <View>
-                            <Text style={{color:COLORS.grey}} > Location  </Text>
-                            <Text style={{color:COLORS.dark , fontSize:20,}} > Pakistan  </Text>
+                            <Text style={{color:COLORS.grey, fontSize:18}} > Location  </Text>
+                            <Text style={{color:'#3abeff' , fontSize:20,}} > Pakistan  </Text>
                         </View>
                         <View >
-                            <Image source={require('../images/profile.png')}
-                             style={styles.image} />
+                            <Image source={require('../Logo/Applogo.jpeg')}
+                             style={styles.image} resizeMode='contain' />
                         </View>
                         </View>
                         <ScrollView>
                             <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:10, }}>
-                                <View style={styles.search}>
-                                   <TextInput placeholder="Search Adress,Location,City"
-                                   style={{color:COLORS.grey,backgroundColor:COLORS.white,height:38, width: 250,borderColor:COLORS.dark,borderRadius:20,borderWidth:1}}/>
-                                </View>
+                                
                                 {/* <View style={styles.sortbtn}></View> */}
                                 </View>
                                 <OptionList/>
@@ -107,8 +104,8 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
     },
     image:{
-        height:50,
-        width:50,
+        height:60,
+        width:60,
         borderRadius:25,
     },
     search:{

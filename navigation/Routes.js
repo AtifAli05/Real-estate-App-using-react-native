@@ -11,6 +11,7 @@ import FetchListing from '../Risecomponents/FetchListing';
 import Bottomtab from './Tabnavigation/Bottomtab'
 import auth from '@react-native-firebase/auth';
 import DetailScreen from '../Screens/Detailscreen';
+import Searcheddeatils from '../Risecomponents/Searcheddeatils'
 import index from '../Maps/index';
 
 const Stack = createNativeStackNavigator();
@@ -56,6 +57,7 @@ const TabBar=()=>{
     <Stack.Screen name="Upload" component={Upload}/>
     <Stack.Screen name="DetailScreen" component={DetailScreen} />
      <Stack.Screen name="Maps" component={index}/>
+     <Stack.Screen name="searchdetails" component={Searcheddeatils}/>
     </Stack.Navigator> 
   )
 }

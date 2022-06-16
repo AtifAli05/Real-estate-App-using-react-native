@@ -12,21 +12,7 @@ const Detailscreen = ({route}) => {
     return (
         <View style={{flex:1,backgroundColor:'#fff'}}>
             <ScrollView>
-            <View style={{marginHorizontal:5,alignItems:'center',height:300,}} >
-            {/* <FlatList
-    horizontal={true} 
-    showsHorizontalScrollIndicator={false} 
-    data={item.images}
-    
-    renderItem={ ({ img, index }) => (
-      <Image source={{uri:img}} 
-        key={index} 
-        style={styles.image}
-      />
-    )}
-  />  */}
- 
-     
+            <View style={{marginHorizontal:5,alignItems:'center',height:300,}} >     
         <Image style={styles.image} source={{uri:item.images[0]}} resizeMode="contain" />
     
            </View>
@@ -42,7 +28,7 @@ const Detailscreen = ({route}) => {
            <Text style={{fontWeight:'bold',color:'#000',marginVertical:10}}>Details</Text>
            </View>
            <View style={{justifyContent:'space-around',flexDirection:'row',marginVertical:10}} >
-           <Text style={{fontWeight:'bold'}}>Contact</Text>
+           <Text style={{fontWeight:'bold'}} >Contact</Text>
            <Text style={{fontWeight:'bold'}} selectable={true} >{item.phone}</Text>
            </View>
            <View style={{justifyContent:'space-around',flexDirection:'row',marginVertical:10}} >
@@ -68,7 +54,6 @@ const Detailscreen = ({route}) => {
            <View style={{alignItems:'center', marginTop:10}} >
            <TouchableOpacity style={styles.callbtn}>
            <Text onPress={()=>{Linking.openURL(`tel:${item.phone}`);}} style={styles.funcNavText}>Call</Text>
-
            </TouchableOpacity>
            </View>
            </ScrollView>
@@ -105,7 +90,6 @@ const styles = StyleSheet.create({
             alignItems: "center",
             backgroundColor: "#F5F5F5",
             padding: 10,
-            
             height:40,
             width:200,
             borderRadius:10        

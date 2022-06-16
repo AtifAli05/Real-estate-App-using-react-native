@@ -36,7 +36,7 @@ const BottomTab=()=> {
           return <Ionicons name={iconName} size={size} color={color} /> ;
           
         },
-        tabBarActiveTintColor: 'blue',
+        tabBarActiveTintColor: '#3abeff',
         headerShown:false,
          tabBarInactiveTintColor: 'gray',
        } ) }

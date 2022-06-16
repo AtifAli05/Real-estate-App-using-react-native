@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Searches } from '../Risecomponents/Searches';
+import firestore from '@react-native-firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
 
 // import all the components we are going to use
 import {
@@ -8,96 +11,80 @@ import {
   View,
   FlatList,
   TextInput,
+  TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
 
 const Searchscreen = () => {
-  const [search, setSearch] = useState('');
-  const [filteredDataSource, setFilteredDataSource] = useState([]);
-  const [masterDataSource, setMasterDataSource] = useState([]);
+  const nav =useNavigation();
+   const [text , settext]=useState('');
+   const [loading,setLoading] = React.useState('')
+   const [products,setProducts ] = useState([]);
 
-//   useEffect(() => {
-//     fetch('https://jsonplaceholder.typicode.com/posts')
-//       .then((response) => response.json())
-//       .then((responseJson) => {
-//         setFilteredDataSource(responseJson);
-//         setMasterDataSource(responseJson);
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//       });
-//   }, []);
 
-  const searchFilterFunction = (text) => {
-    // Check if searched text is not blank
-    if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource and update FilteredDataSource
-      const newData = masterDataSource.filter(function (item) {
-        // Applying filter for the inserted text in search bar
-        const itemData = item.title
-          ? item.title.toUpperCase()
-          : ''.toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
+  const searched=() => {
+   
+    firestore()
+    .collection('property')
+    // Filter results
+    .where('location', 'in', [text])
+    // Limit results
+    .limit(20)
+    .get()
+    .then(querySnapshot => {
+     console.log(querySnapshot.size)
+     let data=[];
+     querySnapshot.forEach(documentSnapshot=>{
+
+       console.log("City", documentSnapshot.data());
+       data.push(documentSnapshot.data())
       });
-      setFilteredDataSource(newData);
-      setSearch(text);
-    } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
-      setFilteredDataSource(masterDataSource);
-      setSearch(text);
-    }
-  };
+     setLoading(false);
+     setProducts(data);
+  
 
-  const ItemView = ({ item }) => {
-    return (
-      // Flat List Item
-      <Text style={styles.itemStyle} onPress={() => getItem(item)}>
-        {item.id}
-        {'.'}
-        {item.title.toUpperCase()}
-      </Text>
-    );
-  };
-
-  const ItemSeparatorView = () => {
-    return (
-      // Flat List Item Separator
-      <View
-        style={{
-          height: 0.5,
-          width: '100%',
-          backgroundColor: '#C8C8C8',
-        }}
-      />
-    );
-  };
-
-  const getItem = (item) => {
-    // Function for click on an item
-    alert('Id : ' + item.id + ' Title : ' + item.title);
-  };
+    })
+  }
+  useEffect(()=>{
+    // console.log(products)
+    searched();
+  },[]);
+if(loading)
+{
+  return<View style={{justifyContent: 'center',alignItems: 'center',flex:1}}>
+    <ActivityIndicator size="large" color="green" />
+  </View>
+}
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+   
       <View style={styles.container}>
         <TextInput
           style={styles.textInputStyle}
-          onChangeText={(text) => searchFilterFunction(text)}
-          value={search}
+          onChangeText={te => settext(te)}
+          onKeyPress={searched}
           underlineColorAndroid="transparent"
           placeholder="Search Here"
           autoFocus
+
         />
-        <FlatList
-          data={filteredDataSource}
-          keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={ItemSeparatorView}
-          renderItem={ItemView}
-        />
-      </View>
-    </SafeAreaView>
+      
+
+     
+          <FlatList
+          keyExtractor={(item,index) => index}
+          data={products}
+          renderItem={({item})=>{
+            console.log(item.name,"    ",item?.images[0])
+      return(
+        <TouchableOpacity onPress={()=> nav.navigate('DetailScreen',{item:item})} >
+          {/* <Text>ass</Text> */}
+       <Searches name={item.name} Price={item.Price} image={item?.images[0]} Area={item.Area} location={item.location}/>
+          {/* <Text> pressme</Text> */}
+           </TouchableOpacity>)}}
+    />
+    </View>
+ 
   );
 };
 
@@ -110,10 +97,11 @@ const styles = StyleSheet.create({
   },
   textInputStyle: {
     height: 40,
+    color:'#000',
     borderWidth: 1,
     paddingLeft: 20,
     margin: 5,
-    borderColor: '#009688',
+    borderColor: '#3abeff',
     borderRadius:20,
     backgroundColor: '#FFFFFF',
   },
